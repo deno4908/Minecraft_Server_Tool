@@ -1,6 +1,33 @@
 from curl_cffi import requests
 from tqdm import tqdm
 import os
+import shutil
+class Color():
+    BLACK = "\033[0;30m"
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    BROWN = "\033[0;33m"
+    BLUE = "\033[0;34m"
+    PURPLE = "\033[0;35m"
+    CYAN = "\033[0;36m"
+    LIGHT_GRAY = "\033[0;37m"
+    DARK_GRAY = "\033[1;30m"
+    LIGHT_RED = "\033[1;31m"
+    LIGHT_GREEN = "\033[1;32m"
+    YELLOW = "\033[1;33m"
+    LIGHT_BLUE = "\033[1;34m"
+    LIGHT_PURPLE = "\033[1;35m"
+    LIGHT_CYAN = "\033[1;36m"
+    LIGHT_WHITE = "\033[1;37m"
+    BOLD = "\033[1m"
+    FAINT = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
+    BLINK = "\033[5m"
+    NEGATIVE = "\033[7m"
+    CROSSED = "\033[9m"
+    END = "\033[0m"
+
 def project_server():
     try:
         server_api = requests.get("https://api.papermc.io/v2/projects/").json()
@@ -18,30 +45,64 @@ def download_version(project,version):
         GET_BUILD = requests.get(f"https://api.papermc.io/v2/projects/{project}/versions/{version}/builds").json()
         default_builds = [build["build"] for build in GET_BUILD["builds"] if build.get("channel") == "default"]
         LATEST_BUILD = default_builds[-1] if default_builds else None
-        if LATEST_BUILD:
-            
+        if LATEST_BUILD: 
             JAR_NAME = f"{project}-{version}-{LATEST_BUILD}.jar"
             version_folder = f"{project}-{version}-{LATEST_BUILD}"
-            os.makedirs(version_folder, exist_ok=True)
-            save_path = os.path.join(version_folder, "server.jar")
-            server_api = requests.get(f"https://api.papermc.io/v2/projects/{project}/versions/{version}/builds/{LATEST_BUILD}/downloads/{JAR_NAME}",stream=True)
-            server_api.raise_for_status()
-            total = int(server_api.headers.get('content-length', 0))
-            with open(save_path, "wb") as f, tqdm(
-                desc="Tiến độ tải",
-                total=total,
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-            ) as bar:
-                for chunk in server_api.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-                        bar.update(len(chunk))
+            if os.path.exists(version_folder):
+                print(f"[{Color.RED}!{Color.END}] {Color.LIGHT_WHITE}=> Thư mục '{version_folder}' đã tồn tại.{Color.END}")
+                print(f"[{Color.YELLOW}1{Color.END}]{Color.LIGHT_WHITE} => Chạy server cũ{Color.END}")
+                print(f"[{Color.YELLOW}2{Color.END}]{Color.LIGHT_WHITE} => Xóa server cũ chạy mới{Color.END}")
+                while True:
+                    choose = int(input(f"[{Color.GREEN}->-{Color.END}] {Color.LIGHT_WHITE}=> Nhập lựa chọn của bạn : {Color.END}"))
+                    if(choose >0 and choose<=2):
+                        break
+                if(choose == 1):
+                    return version_folder
+                else:
+                    shutil.rmtree(version_folder)
+                    os.makedirs(version_folder, exist_ok=True)
+                    save_path = os.path.join(version_folder, "server.jar")
+                    server_api = requests.get(f"https://api.papermc.io/v2/projects/{project}/versions/{version}/builds/{LATEST_BUILD}/downloads/{JAR_NAME}",stream=True)
+                    server_api.raise_for_status()
+                    total = int(server_api.headers.get('content-length', 0))
+                    with open(save_path, "wb") as f, tqdm(
+                        desc="Tiến độ tải",
+                        total=total,
+                        unit='B',
+                        unit_scale=True,
+                        unit_divisor=1024,
+                    ) as bar:
+                        for chunk in server_api.iter_content(chunk_size=8192):
+                            if chunk:
+                                f.write(chunk)
+                                bar.update(len(chunk))
 
-            print("✅ Tải hoàn tất!")
-            print("Kích thước file tải về:", os.path.getsize(save_path), "bytes")
-            return version_folder
+                    print("✅ Tải hoàn tất!")
+                    print("Kích thước file tải về:", os.path.getsize(save_path), "bytes")
+                    return version_folder
+               
+                    
+            else:
+                os.makedirs(version_folder, exist_ok=True)
+                save_path = os.path.join(version_folder, "server.jar")
+                server_api = requests.get(f"https://api.papermc.io/v2/projects/{project}/versions/{version}/builds/{LATEST_BUILD}/downloads/{JAR_NAME}",stream=True)
+                server_api.raise_for_status()
+                total = int(server_api.headers.get('content-length', 0))
+                with open(save_path, "wb") as f, tqdm(
+                    desc="Tiến độ tải",
+                    total=total,
+                    unit='B',
+                    unit_scale=True,
+                    unit_divisor=1024,
+                ) as bar:
+                    for chunk in server_api.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+                            bar.update(len(chunk))
+
+                print("✅ Tải hoàn tất!")
+                print("Kích thước file tải về:", os.path.getsize(save_path), "bytes")
+                return version_folder
         else:
             print("Không tìm thấy bản build ! ")
     except Exception as e:
