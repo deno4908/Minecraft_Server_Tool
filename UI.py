@@ -72,6 +72,7 @@ def main():
             except:
                 pass    
         if Java_path == "N":
+            Java_path = "java"
             try:
                 subprocess.run(['java', f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
             except subprocess.CalledProcessError as e:
