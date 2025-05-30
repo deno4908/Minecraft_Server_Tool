@@ -51,7 +51,6 @@ Không tương thích hết với plugin Paper/Spigot do thay đổi cơ chế l
 ![Main2](https://i.postimg.cc/PrSXKQQ5/Screenshot-2025-05-30-191158.png)
 - Mô tả : Hỗ trợ gần như tất cả các phiên bản hiện tại
 ## 🚀 About Me
-- [Youtube](https://www.youtube.com/@wne9838https://www.youtube.com/@wne9838)
-
+- [Youtube](https://www.youtube.com/@wne9838)
 - [Facebook](https://www.facebook.com/accngunghoatdongreal0)
 - [Gmail](vinhytb3010@gmail.com)
