@@ -53,10 +53,10 @@ def main():
         if(not version_folder):
             sys.exit(0) 
         if(version_folder == "exists"):
-            Java_path = input(rf"[{Color.LIGHT_CYAN}JAVA{Color.END}] {Color.LIGHT_WHITE}=> Nhập Java path (nếu dùng 2 bản Java) (Path/N) : {Color.END}")
+            java_exe = "java"
             while True:
                 try:
-                    minRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp Min Ram : {Color.END}"))
+                    minRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp Min Ram(GB) : {Color.END}"))
                     if(minRam>0):
                         break
                 except KeyboardInterrupt:
@@ -65,33 +65,23 @@ def main():
                     pass
             while True:
                 try:
-                    maxRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp max Ram : {Color.END}"))
+                    maxRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp max Ram(GB) : {Color.END}"))
                     if(maxRam>0 and maxRam>minRam):
                         break
                 except KeyboardInterrupt:
                     sys.exit(0)
                 except:
                     pass    
-            if Java_path == "N":
-                java_exe = "java"
-                try:
-                    subprocess.run(['java', f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
-                except subprocess.CalledProcessError as e:
-                    print(f"Lỗi khi chạy server: {e}")
-                    sys.exit(1)
-            else:
-                Java_path = r"C:\Program Files\Java\jdk-21.0.2\bin"
-                java_exe = os.path.join(Java_path, "java.exe")
-                try:
-                    subprocess.run([java_exe, f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
-                except subprocess.CalledProcessError as e:
-                    print(f"Lỗi khi chạy server: {e}")
-                    sys.exit(1)
+            try:
+                subprocess.run([java_exe, f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Lỗi khi chạy server: {e}")
+                sys.exit(1)
         else:
-            Java_path = input(rf"[{Color.LIGHT_CYAN}JAVA{Color.END}] {Color.LIGHT_WHITE}=> Nhập Java path (nếu dùng 2 bản Java) (Path/N) : {Color.END}")
+            java_exe = "java"
             while True:
                 try:
-                    minRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp Min Ram : {Color.END}"))
+                    minRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp Min Ram(GB) : {Color.END}"))
                     if(minRam>0):
                         break
                 except KeyboardInterrupt:
@@ -100,28 +90,18 @@ def main():
                     pass
             while True:
                 try:
-                    maxRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp max Ram : {Color.END}"))
+                    maxRam = int(input(f"[{Color.RED}+_+{Color.END}] => {Color.LIGHT_CYAN}Nhâp max Ram(GB) : {Color.END}"))
                     if(maxRam>0 and maxRam>minRam):
                         break
                 except KeyboardInterrupt:
                     sys.exit(0)
                 except:
                     pass    
-            if Java_path == "N":
-                java_exe = "java"
-                try:
-                    subprocess.run(['java', f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
-                except subprocess.CalledProcessError as e:
-                    print(f"Lỗi khi chạy server: {e}")
-                    sys.exit(1)
-            else:
-                Java_path = r"C:\Program Files\Java\jdk-21.0.2\bin"
-                java_exe = os.path.join(Java_path, "java.exe")
-                try:
-                    subprocess.run([java_exe, f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
-                except subprocess.CalledProcessError as e:
-                    print(f"Lỗi khi chạy server: {e}")
-                    sys.exit(1)
+            try:
+                subprocess.run([java_exe, f'-Xms{minRam}G', f'-Xmx{maxRam}G', '-jar', 'server.jar', 'nogui'],cwd=version_folder,check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Lỗi khi chạy server: {e}")
+                sys.exit(1)
             eula_fix(version_folder)
             print(f"{Color.LIGHT_WHITE}Đã Fix eula == true")
             file_path = os.path.join(version_folder, "server.properties")
@@ -145,7 +125,7 @@ def main():
                 new_value = input(f"Nhập giá trị mới cho '{key_to_edit}': ").strip()
                 properties[key_to_edit] = new_value
                 print(f"Đã cập nhật {key_to_edit} = {new_value}")
-            
+                
             write_properties(file_path, properties)
             print(f"\nĐã lưu thay đổi vào '{file_path}'.")
             try:
@@ -153,4 +133,3 @@ def main():
             except subprocess.CalledProcessError as e:
                 print(f"Lỗi khi chạy server: {e}")
                 sys.exit(1)
-main()
