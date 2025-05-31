@@ -50,6 +50,9 @@ Thích hợp cho server nhiều người chơi hoặc nhiều hoạt động cù
 Không tương thích hết với plugin Paper/Spigot do thay đổi cơ chế luồng.Đang trong giai đoạn phát triển, ít plugin hỗ trợ hoàn toàn.
 ![Main2](https://i.postimg.cc/PrSXKQQ5/Screenshot-2025-05-30-191158.png)
 - Mô tả : Hỗ trợ gần như tất cả các phiên bản hiện tại
+## Hướng dẫn
+- [Ubuntu VPS](https://www.youtube.com/watch?v=A0m3MK8pvPA)
+- [Windows VPS + Máy tính cá nhân](https://www.youtube.com/watch?v=nKZIeac7drw)
 ## 🚀 About Me
 - [Youtube](https://www.youtube.com/@wne9838)
 - [Facebook](https://www.facebook.com/accngunghoatdongreal0)
